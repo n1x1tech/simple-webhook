@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>n8n Webhook Form</title>
+</head>
+<body>
+  <form id="webhookForm">
+    <label>
+      Webhook URL:
+      <input type="url" id="webhookUrl" required placeholder="https://your-n8n-domain/webhook/..." />
+    </label><br><br>
+
+    <label>
+      Message:
+      <input type="text" name="message" required />
+    </label><br><br>
+
+    <label>
+      File:
+      <input type="file" name="upload" />
+    </label><br><br>
+
+    <button type="submit">Send to n8n</button>
+  </form>
+
+  <script>
+    document.getElementById('webhookForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const url = document.getElementById('webhookUrl').value;
+      const formElement = e.target;
+      const formData = new FormData(formElement);
+
+      try {
+        await fetch(url, {
+          method: 'POST',
+          body: formData
+        });
+        alert('Data sent to n8n!');
+      } catch (err) {
+        alert('Failed to send: ' + err.message);
+      }
+    });
+  </script>
+</body>
+</html>
